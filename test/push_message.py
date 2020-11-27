@@ -1,5 +1,6 @@
 import json
 import time
+import random
 
 import amqpstorm
 from amqpstorm.exception import AMQPConnectionError
@@ -61,7 +62,8 @@ def push_message():
     message = request.args.get('message', '')
 
     msg = dict(time_now=int(time.time()),
-               message=message)
+               message=message,
+               user_id=random.randint(1, 4))
 
     mq_conn.channel_publish(msg)
 
