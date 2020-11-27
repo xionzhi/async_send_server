@@ -13,11 +13,11 @@ class BaseSend(AbstractBase):
     async def redis_executor(self, command, *args):
         return await self.redis_pool.execute(command, *args)
 
-    async def mysql_executor(self, sql, many=False):
+    async def mysql_executor(self, sql, data, many=False):
         # many=True > fetchall
         async with self.mysql_pool.acquire() as conn:
             async with conn.cursor() as cur:
-                await cur.execute(sql)
+                await cur.execute(sql, data)
                 if many is True:
                     return await cur.fetchall()
                 return await cur.fetchone()
